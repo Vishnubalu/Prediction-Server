@@ -25,7 +25,7 @@ def liverDiseasePrediction(request):
         res = ML_model.prediction(data)
 
         # return render('index.html', template_name='index.html')
-        return Response(json.dumps(res), content_type="application/json")
+        return Response(json.dumps({"messege":res}), content_type="application/json")
 
     except ValueError as e:
         print(e.args[0], status.HTTP_400_BAD_REQUEST)
