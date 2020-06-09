@@ -5,7 +5,7 @@ import pickle
 from sklearn.model_selection import train_test_split
 
 
-def getcols():
+def trainModel():
     data = pd.read_csv('predictionApi/liver_disease.csv')
     cols = data.columns
     X = data.drop(['Dataset'], axis=1)
@@ -15,8 +15,11 @@ def getcols():
     random_forest.fit(X_train, y_train)
     with open('predictionApi/model.pkl', 'wb') as fh:
         pickle.dump(random_forest, fh)
-    return list(cols[:-1])
 
+def getcols():
+    data = pd.read_csv('predictionApi/liver_disease.csv')
+    cols = data.columns
+    return list(cols[:-1])
 
 def prediction(request):
     test = pd.DataFrame([[0] * (len(getcols()))], columns=getcols())
@@ -27,8 +30,13 @@ def prediction(request):
         print(key)
         test[key] = float(syms[key])
 
-    with open('predictionApi/model.pkl', 'rb') as file:
-        model = pickle.load(file)
+    try:
+        with open('predictionApi/model.pkl', 'rb') as file:
+            model = pickle.load(file)
+    except:
+        trainModel()
+        with open('predictionApi/model.pkl', 'rb') as file:
+            model = pickle.load(file)
 
     if(model.predict(test) == 1):
         return "have disease"
