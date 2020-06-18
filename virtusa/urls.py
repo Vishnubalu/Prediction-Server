@@ -20,5 +20,8 @@ from predictionApi import views
 urlpatterns = [
     path('symptoms/', views.liverDiseaseSymptoms),
     path('predictdisease/', views.liverDiseasePrediction),
+    path('download/', views.downloadsample),
+    path('result/', views.downloadResult),
+    path('upload/', views.uploadFile),
     path('admin/', admin.site.urls),
 ]
