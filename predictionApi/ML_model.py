@@ -84,7 +84,8 @@ def prediction(request):
 
 def transform_data(request):
     print("transform data")
-    request.drop(['direct_bilirubin', 'aspartate_aminotransferase', 'total_protiens', 'albumin'], axis=1, inplace=True)
+    request.columns = map(str.lower, request.columns)
+    request.drop(['direct_bilirubin', 'aspartate_aminotransferase', 'total_protiens', 'albumin'], axis=1,inplace=True)
     new_gender = {"Male": 1, "Female": 0}
     request["gender"] = request.gender.map(new_gender)
     skewed_cols = ['albumin_and_globulin_ratio', 'total_bilirubin', 'alkaline_phosphotase', 'alamine_aminotransferase']
@@ -109,6 +110,7 @@ def predictFromCSV(dataframe):
             return ['incorrect']
     dataframe = dataframe[cols]
     print("columns ", dataframe.columns)
+
     df = transform_data(dataframe)
     try:
         with open('data/model.pkl', 'rb') as file:
