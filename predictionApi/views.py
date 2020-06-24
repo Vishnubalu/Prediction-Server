@@ -56,6 +56,8 @@ def uploadFile(request):
         if ans[0] == 'incorrect':
             raise ValueError
         df["result"] = ans
+        encode = {1:"have disease", 2:"not have disease"}
+        df["result"] = df["result"].map(encode)
         path = os.getcwd() + r'\data\results.csv'
         df.to_csv(path,index = False, header=True)
         return Response(json.dumps({"result":df.to_json(), "created" : 0, "open" : 0}), content_type="application/json")
