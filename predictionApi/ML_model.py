@@ -1,19 +1,10 @@
-
 from sklearn.ensemble import RandomForestClassifier
 import pickle
-import numpy as np
 import pandas as pd
 from sklearn.utils import resample
 from sklearn.preprocessing import LabelEncoder, RobustScaler
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV, KFold
-import numpy as np
-import pandas as pd
-from sklearn.utils import resample
-from sklearn.preprocessing import LabelEncoder, RobustScaler
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import GridSearchCV, KFold
-
 
 def trainModel():
     df = pd.read_csv("data/liver_disease.csv")
@@ -57,7 +48,6 @@ def getcols():
 def prediction(request):
     test = pd.DataFrame([[0] * (len(getcols()))], columns=getcols())
     syms = request['symptoms']
-
     for key in syms:
         if(key != "Gender"):
             test[key] = float(syms[key])
@@ -66,7 +56,6 @@ def prediction(request):
                 test[key] = "Male"
             else:
                 test[key] = "Female"
-
     test = transform_data(test)
     try:
         with open('data/model.pkl', 'rb') as file:
@@ -76,11 +65,10 @@ def prediction(request):
         with open('data/model.pkl', 'rb') as file:
             model = pickle.load(file)
 
-    if(model.predict(test) == 1):
+    if(model.predict(test)[0] == 1):
         return "have disease"
     else:
         return "not have disease"
-
 
 def transform_data(request):
     print("transform data")
@@ -98,7 +86,6 @@ def transform_data(request):
                       'albumin_and_globulin_ratio']].columns:
         request[c] = rs.fit_transform(request[c].values.reshape(-1, 1))
     return request
-
 
 def predictFromCSV(dataframe):
     dataframe.columns = map(str.lower, dataframe.columns)
