@@ -1,5 +1,6 @@
 import json
 import django
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import pandas as pd
 import os
@@ -7,7 +8,13 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from predictionApi import ML_model
+
 import time
+
+@api_view(['GET'])
+def react(request):
+    path = os.getcwd()
+    return render(request,path+r"\virtusa_frontend\public\index.html")
 
 @api_view(['GET'])
 def liverDiseaseSymptoms(request):

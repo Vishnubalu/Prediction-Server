@@ -3,6 +3,7 @@ from django.urls import path
 from predictionApi import views
 
 urlpatterns = [
+    path('', views.react),
     path('symptoms/', views.liverDiseaseSymptoms),
     path('predictdisease/', views.liverDiseasePrediction),
     path('download/', views.downloadsample),
